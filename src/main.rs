@@ -118,7 +118,6 @@ pub fn publish_data(
     data: Mpu6050Data,
 ) -> Result<String, EspError> {
     let json = get_json(data);
-    // mqtt_client.publish(topic, &json, 0);
     match mqtt_client.publish(topic, &json, 0) {
         Ok(_) => Ok(json),
         Err(e) => Err(e),
@@ -129,8 +128,6 @@ fn main() {
     // It is necessary to call this function once. Otherwise some patches to the runtime
     // implemented by esp-idf-sys might not link properly. See https://github.com/esp-rs/esp-idf-template/issues/71
     esp_idf_svc::sys::link_patches();
-
-    // Bind the log crate to the ESP Logging facilities
 
     esp_idf_svc::log::EspLogger::initialize_default();
     esp_idf_svc::log::set_target_level("*", log::LevelFilter::Info).unwrap();
@@ -172,7 +169,6 @@ fn main() {
 
     log::info!("ssid: {}", app_config.ssid.to_string());
 
-    // Initialize WiFi controller and handle the result
     let wifi_client = match WifiController::new(app_config.ssid, app_config.password, dp.modem)
     {
         Ok(client) => client,
@@ -182,7 +178,6 @@ fn main() {
         }
     };
 
-    // Wait for Wi-Fi connection
     while !wifi_client.is_connected() {
         log::info!("Waiting for Wi-Fi connection...");
         FreeRtos::delay_ms(1000);
@@ -207,7 +202,6 @@ fn main() {
     )
     .expect("Failed to initialize MQTT client");
 
-    // Retry publishing the message if the initial attempt fails
     let mut retry_count = 0;
     let max_retries = 5;
     while retry_count < max_retries {
@@ -216,7 +210,7 @@ fn main() {
             Err(e) => {
                 eprintln!("Failed to publish message: {:?}", e);
                 retry_count += 1;
-                FreeRtos::delay_ms(1000); // Wait for 1 second before retrying
+                FreeRtos::delay_ms(1000);
             }
         }
     }
