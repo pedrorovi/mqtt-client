@@ -1,13 +1,7 @@
-use embedded_svc::wifi::Wifi;
 use esp_idf_hal::modem;
-use esp_idf_hal::peripherals::Peripherals;
 use esp_idf_svc::wifi::{ClientConfiguration, Configuration, EspWifi};
 use esp_idf_svc::{eventloop::EspSystemEventLoop, nvs::EspDefaultNvsPartition};
 use std::{thread::sleep, time::Duration};
-
-use esp_idf_sys::esp_netif_get_ip_info;
-use esp_idf_sys::esp_netif_ip_info_t;
-use esp_idf_sys::esp_netif_t;
 
 pub struct WifiController<'a> {
     client: EspWifi<'a>,

@@ -1,8 +1,6 @@
-use embedded_svc::mqtt::client::Event;
 use esp_idf_svc::mqtt::client::QoS;
 use esp_idf_svc::mqtt::client::{EspMqttClient, MqttClientConfiguration};
 use esp_idf_sys::EspError;
-
 
 pub struct MqttClient<'a> {
     client: EspMqttClient<'a>,
@@ -31,6 +29,8 @@ impl<'a> MqttClient<'a> {
             2 => QoS::ExactlyOnce,
             _ => QoS::AtMostOnce,
         };
-        self.client.publish(topic, qos, true, payload.as_bytes()).map(|_| ())
+        self.client
+            .publish(topic, qos, true, payload.as_bytes())
+            .map(|_| ())
     }
 }

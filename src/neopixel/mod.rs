@@ -1,10 +1,7 @@
-use std::borrow::BorrowMut;
-
 use esp_idf_hal::gpio::*;
 use esp_idf_hal::peripheral::*;
-use esp_idf_hal::peripherals::Peripherals;
 use esp_idf_hal::rmt::RmtChannel;
-use smart_leds::{SmartLedsWrite, White, RGB8};
+use smart_leds::White;
 use ws2812_esp32_rmt_driver::*;
 
 pub struct NeoPixel {

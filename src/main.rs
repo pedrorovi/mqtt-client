@@ -1,18 +1,10 @@
-use std::borrow::{Borrow, BorrowMut};
-use std::env;
-use std::ffi::CString;
-use std::path::Path;
 use std::ptr;
 
-use embedded_svc::mqtt;
-use esp_idf_sys::{
-    self as _, esp, vTaskDelay, xPortGetTickRateHz, xTaskCreatePinnedToCore, xTaskDelayUntil,
-};
+use esp_idf_sys::{xTaskCreatePinnedToCore};
 
 use esp_idf_hal::delay::FreeRtos;
 use esp_idf_hal::i2c::I2cError;
 use esp_idf_hal::peripherals::Peripherals;
-use esp_idf_hal::prelude::*;
 use esp_idf_sys::EspError;
 
 use mpu6050::Mpu6050Error;
@@ -58,9 +50,9 @@ unsafe extern "C" fn task1(data: *mut core::ffi::c_void) {
     let task_data = data as *mut TaskData;
     let task_data = &mut *task_data;
 
-    let mut mpu = &mut task_data.mpu;
-    let mut mqtt_client = &mut task_data.mqtt_client;
-    let mut neopixel = &mut task_data.neo_pixel;
+    let mpu = &mut task_data.mpu;
+    let mqtt_client = &mut task_data.mqtt_client;
+    let neopixel = &mut task_data.neo_pixel;
     let topic = task_data.topic;
 
     loop {
@@ -77,7 +69,7 @@ unsafe extern "C" fn task1(data: *mut core::ffi::c_void) {
             }
         };
 
-        let res = match publish_data(mqtt_client, topic, data) {
+        let _res = match publish_data(mqtt_client, topic, data) {
             Ok(json) => {
                 log::info!("Published data: {:?}", json);
                 Ok(())
@@ -170,7 +162,7 @@ fn main() {
         }
     };
 
-    let mut mpu = match Mpu6050Controller::new(i2c_controller) {
+    let mpu = match Mpu6050Controller::new(i2c_controller) {
         Ok(controller) => controller,
         Err(e) => {
             eprintln!("Failed to initialize MPU6050: {:?}", e);
@@ -181,7 +173,7 @@ fn main() {
     log::info!("ssid: {}", app_config.ssid.to_string());
 
     // Initialize WiFi controller and handle the result
-    let mut wifi_client = match WifiController::new(app_config.ssid, app_config.password, dp.modem)
+    let wifi_client = match WifiController::new(app_config.ssid, app_config.password, dp.modem)
     {
         Ok(client) => client,
         Err(e) => {

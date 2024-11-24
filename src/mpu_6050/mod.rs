@@ -1,5 +1,3 @@
-use esp_idf_hal::{i2c::I2C0, units::FromValueType};
-use esp_idf_sys::EspError;
 use mpu6050::*;
 
 use esp_idf_hal::i2c::*;
