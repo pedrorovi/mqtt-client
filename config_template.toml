@@ -1,0 +1,10 @@
+[wifi]
+ssid = ""
+password = ""
+
+[mqtt]
+host = ""
+port = 
+client_id = ""
+username = ""
+mqtt_password = ""
