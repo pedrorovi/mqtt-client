@@ -4,7 +4,6 @@ This project demonstrates how to read data from an MPU6050 sensor, create a JSON
 
 ![ESP32 and MPU6050 Setup](docs/wiring.png)
 
-
 ## Features
 
 - Initialize and configure WiFi
@@ -21,3 +20,7 @@ This project demonstrates how to read data from an MPU6050 sensor, create a JSON
 - MQTT broker
 - Rust toolchain
 - ESP-IDF
+
+## Results
+
+![MQTT data](docs/mqtt.png)
