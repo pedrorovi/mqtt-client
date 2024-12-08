@@ -56,7 +56,7 @@ pub fn get_sleeping_rgbw8() -> RGBW8 {
     RGBW8 {
         r: 0,
         g: 0,
-        b: 50,
+        b: 10,
         a: White(0),
     }
 }

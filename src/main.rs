@@ -108,7 +108,7 @@ pub fn get_data(mpu: &mut Mpu6050Controller) -> Result<Mpu6050Data, Mpu6050Error
 
 pub fn get_json(data: Mpu6050Data) -> String {
     format!(
-        r#"{{"acceleration": [{}, {}, {}], "rotation": [{}, {}, {}], "angles": [{}, {}], "temperature": {}}}"#,
+        r#"{{"acceleration": {{"x": {}, "y": {}, "z": {}}}, "rotation": {{"x": {}, "y": {}, "z": {}}}, "angles": {{"0": {}, "1": {}}}, "temperature": {}}}"#,
         data.acceleration.0,
         data.acceleration.1,
         data.acceleration.2,
