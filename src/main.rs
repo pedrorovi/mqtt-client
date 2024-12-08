@@ -1,6 +1,6 @@
 use std::ptr;
 
-use esp_idf_sys::{xTaskCreatePinnedToCore};
+use esp_idf_sys::xTaskCreatePinnedToCore;
 
 use esp_idf_hal::delay::FreeRtos;
 use esp_idf_hal::i2c::I2cError;
@@ -105,10 +105,19 @@ pub fn get_data(mpu: &mut Mpu6050Controller) -> Result<Mpu6050Data, Mpu6050Error
         }
     }
 }
+
 pub fn get_json(data: Mpu6050Data) -> String {
     format!(
-        r#"{{"acceleration": {:?}, "rotation": {:?}, "angles": {:?}, "temperature": {:?}}}"#,
-        data.acceleration, data.rotation, data.angles, data.temperature
+        r#"{{"acceleration": [{}, {}, {}], "rotation": [{}, {}, {}], "angles": [{}, {}], "temperature": {}}}"#,
+        data.acceleration.0,
+        data.acceleration.1,
+        data.acceleration.2,
+        data.rotation.0,
+        data.rotation.1,
+        data.rotation.2,
+        data.angles.0,
+        data.angles.1,
+        data.temperature
     )
 }
 
@@ -169,8 +178,7 @@ fn main() {
 
     log::info!("ssid: {}", app_config.ssid.to_string());
 
-    let wifi_client = match WifiController::new(app_config.ssid, app_config.password, dp.modem)
-    {
+    let wifi_client = match WifiController::new(app_config.ssid, app_config.password, dp.modem) {
         Ok(client) => client,
         Err(e) => {
             eprintln!("Failed to initialize WiFi controller: {:?}", e);
